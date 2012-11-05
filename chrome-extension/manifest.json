@@ -1,0 +1,20 @@
+{ "name": "Refreshing"
+, "version": "0.1"
+, "manifest_version": 2
+, "description": "Automatically reload file:// pages when their content changes. Uses a node.js server for change detection."
+, "icons": 
+  { "128": "icon-128.png" 
+  }
+, "permissions":
+  [ "tabs"
+  , "http://127.0.0.1:7052/*"
+  ]
+, "background":
+  { "scripts": [ "main.js" ]
+  }
+, "page_action": 
+  { "default_title": "Start refreshing" 
+  , "default_icon": "icon-grey-128.png" 
+  }
+, "offline_enabled": true
+}
