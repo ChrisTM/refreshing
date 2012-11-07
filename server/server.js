@@ -4,6 +4,21 @@ var path = require('path');
 var fs = require('fs');
 
 
+var dirWalk = function (dirname, callback) {
+  callback(dirname);
+  
+  fs.readdir(dirname, function (err, filenames) {
+    filenames.forEach(function (filename) {
+      var pathname = path.join(dirname, filename);
+      fs.stat(pathname, function (err, stats) {
+        if (stats && stats.isDirectory()) {
+          dirWalk(pathname, callback);
+        }
+      });
+    });
+  });
+};
+
 var respondOnChange = function (res, dirname) {
   var watcher = fs.watch(dirname, function (event, filename) {
     console.log('Change detected.', event, filename);
@@ -27,6 +42,8 @@ http.createServer(function (req, res) {
   var dirname = path.dirname(pathname);
 
   console.log('Watching "' + dirname + '"');
-  respondOnChange(res, dirname);
+  dirWalk(dirname, function (dirname) {
+    respondOnChange(res, dirname);
+  });
 
 }).listen(7053, '127.0.0.1');
