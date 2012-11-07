@@ -4,6 +4,17 @@ var path = require('path');
 var fs = require('fs');
 
 
+var respondOnChange = function (res, dirname) {
+  var watcher = fs.watch(dirname, function (event, filename) {
+    console.log('Change detected.', event, filename);
+    if (event === 'change') {
+      res.end(event);
+      watcher.close();
+    }
+  });
+};
+
+
 http.createServer(function (req, res) {
   // skip over favicon requests that'll happen while developing
   if (url.parse(req.url).pathname === '/favicon.ico') { return; }
@@ -16,10 +27,6 @@ http.createServer(function (req, res) {
   var dirname = path.dirname(pathname);
 
   console.log('Watching "' + dirname + '"');
-  fs.watch(dirname, function (event, filename) {
-    console.log('Change detected.', event, filename);
-    if (event === 'change') {
-      res.end(event);
-    }
-  });
+  respondOnChange(res, dirname);
+
 }).listen(7053, '127.0.0.1');
