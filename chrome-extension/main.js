@@ -63,7 +63,9 @@ var refreshing = function (tab) {
   var onError = function () {
     console.log('Poll error. Request: ', req);
     // setTimeout used to prevent filling the call stack
-    window.setTimeout(main, 0);
+    window.setTimeout(function () {
+      refreshing(tab);
+    }, 0);
   };
 
   req.addEventListener('load', onLoad);
