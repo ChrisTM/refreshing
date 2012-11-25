@@ -1,5 +1,5 @@
-// `isActive` and `reqs` keep track of tab specific state.
-var isActive = {};
+// `isRefreshing` and `reqs` keep track of tab specific state.
+var isRefreshing = {};
 var reqs = {};
 
 // show/hide the page action depending on url
@@ -14,26 +14,25 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     chrome.pageAction.hide(tabId);
   }
 
-  syncState(tab);
+  sync(tab);
 });
 
 chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
-  delete isActive[tabId];
+  delete isRefreshing[tabId];
   reqs[tabId] && reqs[tabId].abort();
 });
 
-// toggle the refreshing behavior on pageAction click
-chrome.pageAction.onClicked.addListener(function addListener(tab) {
-  isActive[tab.id] = ! isActive[tab.id];
-  console.log('Refreshing is ' + (isActive[tab.id] ? 'enabled' : 'disabled'));
-  syncState(tab);
-});
+// toggle the refreshing behavior
+var toggleState = function (tab) {
+  isRefreshing[tab.id] = ! isRefreshing[tab.id];
+  sync(tab);
+  console.info('Refreshing is ' + (isRefreshing[tab.id] ? 'enabled' : 'disabled'));
+};
 
 
 // do whatever's needed to put the page into refreshing or not-refreshing state
-var syncState = function (tab) {
-  console.log('Syncing state');
-  if (isActive[tab.id]) {
+var sync = function (tab) {
+  if (isRefreshing[tab.id]) {
     chrome.pageAction.setIcon({tabId: tab.id, path: 'icon-128.png'});
     chrome.pageAction.setTitle({tabId: tab.id, title: 'Stop refreshing'});
     refreshing(tab);
@@ -61,7 +60,7 @@ var refreshing = function (tab) {
   };
 
   var onError = function () {
-    console.log('Poll error. Request: ', req);
+    console.error('Poll error. Request: ', req);
     // setTimeout used to prevent filling the call stack
     window.setTimeout(function () {
       refreshing(tab);
