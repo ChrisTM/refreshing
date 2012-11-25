@@ -2,11 +2,6 @@ var $ = function (id) {
   return document.getElementById(id);
 };
 
-// for use as a test callback function
-var pargs = function () {
-  console.log(arguments);
-};
-
 // call callback with the currently active tab
 var getCurrentTab = function (callback) {
   chrome.tabs.query({
@@ -22,27 +17,37 @@ var bg = chrome.extension.getBackgroundPage();
 window.onload = function () {
   var startEl = $('start');
   var stopEl = $('stop');
+  var pathEl = $('path');
 
   getCurrentTab(function (tab) {
     // make the UI reflect current tab's state
-    var sync = function () {
+    var syncUI = function () {
       var isRefreshing = bg.isRefreshing[tab.id];
+
+      startEl.disabled = isRefreshing;
+      stopEl.disabled = ! isRefreshing;
+      pathEl.disabled = isRefreshing;
+
       if (isRefreshing) {
-        startEl.disabled = true;
-        stopEl.disabled = false;
+        pathEl.value = bg.path[tab.id]
       } else {
-        startEl.disabled = false;
-        stopEl.disabled = true;
+        pathEl.value = tab.url.substr('file://'.length);
       }
     };
 
-    var onToggle = function () {
-      bg.toggleState(tab);
-      sync();
+    var onStart = function () {
+      var path = pathEl.value;
+      bg.start(tab, path);
+      syncUI();
     };
 
-    sync();
-    startEl.addEventListener('click', onToggle);
-    stopEl.addEventListener('click', onToggle);
+    var onStop = function () {
+      bg.stop(tab);
+      syncUI();
+    };
+
+    syncUI();
+    startEl.addEventListener('click', onStart);
+    stopEl.addEventListener('click', onStop);
   });
 };

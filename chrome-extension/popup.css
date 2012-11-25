@@ -6,9 +6,7 @@ h1 {
   font-size: 1em;
   font-weight: bold;
 }
-input {
-  min-width: 15em;
-}
+
 input, button {
   font-size: inherit;
   box-sizing: border-box;
@@ -16,6 +14,7 @@ input, button {
 
 #path {
   display: block;
+  min-width: 20em;
   width: 100%;
   margin: 1em 0;
 }

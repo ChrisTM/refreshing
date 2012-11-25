@@ -1,5 +1,8 @@
-// `isRefreshing` and `reqs` keep track of tab specific state.
+'use strict';
+
+// these keep track of tab specific state.
 var isRefreshing = {};
+var path = {};
 var reqs = {};
 
 // show/hide the page action depending on url
@@ -14,7 +17,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     chrome.pageAction.hide(tabId);
   }
 
-  sync(tab);
+  syncState(tab);
 });
 
 chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
@@ -22,35 +25,42 @@ chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
   reqs[tabId] && reqs[tabId].abort();
 });
 
-// toggle the refreshing behavior
-var toggleState = function (tab) {
-  isRefreshing[tab.id] = ! isRefreshing[tab.id];
-  sync(tab);
-  console.info('Refreshing is ' + (isRefreshing[tab.id] ? 'enabled' : 'disabled'));
+var start = function (tab, path_) {
+  isRefreshing[tab.id] = true;
+  path[tab.id] = path_;
+  syncState(tab);
 };
 
+var stop = function (tab) {
+  isRefreshing[tab.id] = false;
+  syncState(tab);
+};
 
 // do whatever's needed to put the page into refreshing or not-refreshing state
-var sync = function (tab) {
+var syncState = function (tab) {
   if (isRefreshing[tab.id]) {
     chrome.pageAction.setIcon({tabId: tab.id, path: 'icon-128.png'});
-    chrome.pageAction.setTitle({tabId: tab.id, title: 'Stop refreshing'});
+    chrome.pageAction.setTitle({tabId: tab.id, title: 'Refreshing is started'});
+
     refreshing(tab);
+    console.info('Refreshing started');
   } else {
     chrome.pageAction.setIcon({tabId: tab.id, path: 'icon-grey-128.png'});
-    chrome.pageAction.setTitle({tabId: tab.id, title: 'Start refreshing'});
+    chrome.pageAction.setTitle({tabId: tab.id, title: 'Refreshing is stopped'});
+
     reqs[tab.id] && reqs[tab.id].abort();
+    console.info('Refreshing stopped');
   }
 }
 
 // attach the refreshing behavior to the tab
 var refreshing = function (tab) {
-  var path = tab.url.substr('file://'.length);
+  var path = path[tab.id];
   var req = new XMLHttpRequest();
   reqs[tab.id] = req;
   req.open('GET', 'http://127.0.0.1:7053/?path=' + path);
 
-  console.log('Polling for ', path);
+  console.log('Polling for', path);
 
   var onLoad = function () {
     if (req.status === 200) {
@@ -60,11 +70,11 @@ var refreshing = function (tab) {
   };
 
   var onError = function () {
-    console.error('Poll error. Request: ', req);
+    console.error('Poll error. Request:', req);
     // setTimeout used to prevent filling the call stack
     window.setTimeout(function () {
-      refreshing(tab);
-    }, 0);
+      refreshing(tab, path);
+    }, 1000);
   };
 
   req.addEventListener('load', onLoad);
