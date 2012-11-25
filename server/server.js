@@ -6,7 +6,7 @@ var fs = require('fs');
 
 var dirWalk = function (dirname, callback) {
   callback(dirname);
-  
+
   fs.readdir(dirname, function (err, filenames) {
     filenames.forEach(function (filename) {
       var pathname = path.join(dirname, filename);
