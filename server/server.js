@@ -19,11 +19,20 @@ var dirWalk = function (dirname, callback) {
   });
 };
 
-var respondOnChange = function (res, dirname) {
+var respondOnChange = function (req, res, dirname) {
   var watcher = fs.watch(dirname, function (event, filename) {
     console.log('Change detected.', event, filename);
     if (event === 'change') {
-      res.end(event);
+      res.end();
+      watcher.close();
+    }
+  });
+
+  // clean up after aborted requests
+  req.setMaxListeners(0); // silences memory leak warning
+  req.on('close', function () {
+    if (watcher) {
+      console.log('closing watcher');
       watcher.close();
     }
   });
@@ -43,7 +52,7 @@ http.createServer(function (req, res) {
 
   console.log('Watching "' + dirname + '"');
   dirWalk(dirname, function (dirname) {
-    respondOnChange(res, dirname);
+    respondOnChange(req, res, dirname);
   });
 
 }).listen(7053, '127.0.0.1');
