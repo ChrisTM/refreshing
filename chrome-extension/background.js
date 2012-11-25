@@ -55,12 +55,12 @@ var syncState = function (tab) {
 
 // attach the refreshing behavior to the tab
 var refreshing = function (tab) {
-  var path = path[tab.id];
+  var path_ = path[tab.id];
   var req = new XMLHttpRequest();
   reqs[tab.id] = req;
-  req.open('GET', 'http://127.0.0.1:7053/?path=' + path);
+  req.open('GET', 'http://127.0.0.1:7053/?path=' + path_);
 
-  console.log('Polling for', path);
+  console.log('Polling for', path_);
 
   var onLoad = function () {
     if (req.status === 200) {
@@ -73,7 +73,7 @@ var refreshing = function (tab) {
     console.error('Poll error. Request:', req);
     // setTimeout used to prevent filling the call stack
     window.setTimeout(function () {
-      refreshing(tab, path);
+      refreshing(tab, path_);
     }, 1000);
   };
 

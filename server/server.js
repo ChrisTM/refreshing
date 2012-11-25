@@ -23,19 +23,24 @@ var respondOnChange = function (req, res, dirname) {
   var watcher = fs.watch(dirname, function (event, filename) {
     console.log('Change detected.', event, filename);
     if (event === 'change') {
+      // there's no built-in 'end' event, so we emit it ourselves. some cleanup
+      // code listens for this event
+      res.emit('end');
       res.end();
-      watcher.close();
     }
   });
 
-  // clean up after aborted requests
-  req.setMaxListeners(0); // silences memory leak warning
-  req.on('close', function () {
+  var closeWatcher = function () {
     if (watcher) {
-      console.log('closing watcher');
       watcher.close();
     }
-  });
+  };
+    
+  // clean up after finished responses
+  res.on('end', closeWatcher);
+
+  // clean up after aborted requests
+  req.on('close', closeWatcher);
 };
 
 
@@ -47,7 +52,7 @@ http.createServer(function (req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.statusCode = 200;
 
-  var pathname = url.parse(req.url, true).query['path'] || '/';
+  var pathname = url.parse(req.url, true).query['path'];
   var dirname = path.dirname(pathname);
 
   console.log('Watching "' + dirname + '"');
