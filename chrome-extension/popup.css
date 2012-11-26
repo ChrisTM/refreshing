@@ -27,23 +27,16 @@ input, button {
   clear: both;
 }
 
-ol#log {
-  list-style: none;
-  padding-left: 0em;
+hr {
+  margin: 1em 0;
 }
 
-#log li:before {
-  display: inline-block;
-  margin-right: 0.5em;
-}
-
-#log .error:before {
-  content: 'Error: ';
+.bad {
   color: red;
   font-weight: bold;
 }
 
-#log .info:before {
-  content: 'Info: ';
+.good {
   color: blue;
+  font-weight: bold;
 }
