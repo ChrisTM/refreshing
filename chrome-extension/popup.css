@@ -26,3 +26,24 @@ input, button {
 .clearfix {
   clear: both;
 }
+
+ol#log {
+  list-style: none;
+  padding-left: 0em;
+}
+
+#log li:before {
+  display: inline-block;
+  margin-right: 0.5em;
+}
+
+#log .error:before {
+  content: 'Error: ';
+  color: red;
+  font-weight: bold;
+}
+
+#log .info:before {
+  content: 'Info: ';
+  color: blue;
+}

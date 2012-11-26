@@ -58,7 +58,7 @@ var refreshing = function (tab) {
   var path_ = path[tab.id];
   var req = new XMLHttpRequest();
   reqs[tab.id] = req;
-  req.open('GET', 'http://127.0.0.1:7053/?path=' + path_);
+  req.open('GET', 'http://127.0.0.1:7053/watch/?path=' + path_);
 
   console.log('Polling for', path_);
 

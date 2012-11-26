@@ -14,6 +14,21 @@ var getCurrentTab = function (callback) {
 
 var bg = chrome.extension.getBackgroundPage();
 
+// check that the server is up, tell user if it isn't
+var pingTest = function () {
+  var errorEl = $('connection-error');
+  var req = new XMLHttpRequest();
+  req.open('GET', 'http://127.0.0.1:7053/ping/');
+  req.addEventListener('load', function () {
+    errorEl.style.display = 'none';
+  });
+  req.addEventListener('error', function () {
+    errorEl.style.display = '';
+    startEl.disabled = true;
+  });
+  req.send();
+};
+
 window.onload = function () {
   var startEl = $('start');
   var stopEl = $('stop');
@@ -33,6 +48,9 @@ window.onload = function () {
       } else {
         pathEl.value = tab.url.substr('file://'.length);
       }
+
+      // goes last because it disables some things on ping failure
+      pingTest();
     };
 
     var onStart = function () {

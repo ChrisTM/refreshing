@@ -35,7 +35,7 @@ var respondOnChange = function (req, res, dirname) {
       watcher.close();
     }
   };
-    
+
   // clean up after finished responses
   res.on('end', closeWatcher);
 
@@ -43,15 +43,18 @@ var respondOnChange = function (req, res, dirname) {
   req.on('close', closeWatcher);
 };
 
+var makeEmptyView = function (statusCode) {
+  return function (req, res) {
+    res.statusCode = statusCode || 204;
+    res.end();
+  };
+};
 
-http.createServer(function (req, res) {
-  // skip over favicon requests that'll happen while developing
-  if (url.parse(req.url).pathname === '/favicon.ico') { return; }
+var empty200View = makeEmptyView(200); // ok!
+var empty404View = makeEmptyView(404); // not found
+var empty501View = makeEmptyView(501); // not implemented
 
-  res.setHeader('Content-Type', 'text/plain');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.statusCode = 200;
-
+var refreshingView = function (req, res) {
   var pathname = url.parse(req.url, true).query['path'];
   var dirname = path.dirname(pathname);
 
@@ -59,5 +62,23 @@ http.createServer(function (req, res) {
   dirWalk(dirname, function (dirname) {
     respondOnChange(req, res, dirname);
   });
+};
+
+http.createServer(function (req, res) {
+  var reqURL = url.parse(req.url);
+  var pathname = reqURL.pathname;
+
+  res.setHeader('Content-Type', 'text/plain');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.statusCode = 200;
+
+  var pathToView =
+    { '/favicon.ico': empty404View
+    , '/ping/': empty200View
+    , '/watch/': refreshingView
+    };
+
+  var view  = pathToView[pathname] || empty501View;
+  view(req, res);
 
 }).listen(7053, '127.0.0.1');

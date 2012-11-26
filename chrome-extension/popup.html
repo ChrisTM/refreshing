@@ -16,7 +16,13 @@
     <button disabled id=stop>Stop</button>
   </div>
   <div class=clearfix></div>
-  <div id=status></div>
+
+  <div id=connection-error style="display: none;">
+    <hr>
+    <ol id=log>
+      <li class='error'>Refreshing cannot connect to the watch server. Are you sure it&rsquo;s running?</li>
+    </ol>
+  </div>
 </body>
 
 </html>
