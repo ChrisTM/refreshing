@@ -3,7 +3,9 @@
 , "manifest_version": 2
 , "description": "Automatically reload local pages when their content changes. Uses a node.js server for change detection."
 , "icons": 
-  { "128": "icon-128.png" 
+  { "16": "icons/16-off.png" 
+  , "48": "icons/48-off.png" 
+  , "128": "icons/128-off.png" 
   }
 , "permissions":
   [ "tabs"
@@ -14,7 +16,7 @@
   }
 , "page_action":
   { "default_title": "Configure Refreshing"
-  , "default_icon": "icon-grey-128.png"
+  , "default_icon": "icons/48-off.png"
   , "default_popup": "popup.html"
   }
 , "offline_enabled": true
