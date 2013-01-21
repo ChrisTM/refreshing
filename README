@@ -1,10 +1,1 @@
 Refreshing is a Chrome extension for reloading file:// pages when their on-disk content changes.
-
-How?
-====
-
-I don't know yet. But here are some ideas:
-
-  * extension uses an NPAPI plugin which uses inotify or polling
-  * vanilla Chrome extension communicates with a node.js server
-  * vanilla JavaScript to include on your page that communicates with a node.js server (not Chrome specific!)
