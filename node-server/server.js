@@ -59,6 +59,11 @@ var refreshingView = function (req, res) {
   var dirname = path.dirname(pathname);
 
   console.log('Watching "' + dirname + '"');
+  // Node prints warnings when more than 10 listeners are added created for a
+  // given event, but we expect to attach more than that, so we suppress those
+  // warnings by explicitly setting the max listeners to unlimited
+  req.setMaxListeners(0);
+  res.setMaxListeners(0);
   dirWalk(dirname, function (dirname) {
     respondOnChange(req, res, dirname);
   });
