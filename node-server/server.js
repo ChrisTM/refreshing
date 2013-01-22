@@ -4,6 +4,9 @@ var path = require('path');
 var fs = require('fs');
 
 
+/* For `dirname` and every directory name that is a subdirectory of `dirname`,
+ * call `callback` with that directory name.
+ */
 var dirWalk = function (dirname, callback) {
   callback(dirname);
 
@@ -43,16 +46,6 @@ var respondOnChange = function (req, res, dirname) {
   req.on('close', closeWatcher);
 };
 
-var makeEmptyView = function (statusCode) {
-  return function (req, res) {
-    res.statusCode = statusCode || 204;
-    res.end();
-  };
-};
-
-var empty200View = makeEmptyView(200); // ok!
-var empty404View = makeEmptyView(404); // not found
-var empty501View = makeEmptyView(501); // not implemented
 
 var refreshingView = function (req, res) {
   var pathname = url.parse(req.url, true).query['path'];
@@ -69,6 +62,23 @@ var refreshingView = function (req, res) {
   });
 };
 
+var makeEmptyView = function (statusCode) {
+  return function (req, res) {
+    res.statusCode = statusCode;
+    res.end();
+  };
+};
+
+var empty200View = makeEmptyView(200);
+var empty404View = makeEmptyView(404);
+
+var pathToView =
+  { '/favicon.ico': empty404View
+  , '/ping/': empty200View
+  , '/watch/': refreshingView
+  };
+
+
 http.createServer(function (req, res) {
   var reqURL = url.parse(req.url);
   var pathname = reqURL.pathname;
@@ -77,13 +87,7 @@ http.createServer(function (req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.statusCode = 200;
 
-  var pathToView =
-    { '/favicon.ico': empty404View
-    , '/ping/': empty200View
-    , '/watch/': refreshingView
-    };
-
-  var view  = pathToView[pathname] || empty501View;
+  var view  = pathToView[pathname] || empty404View;
   view(req, res);
 
 }).listen(7053, '127.0.0.1');
