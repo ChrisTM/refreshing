@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="19"
+   height="19"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="19-off.svg"
+   inkscape:export-filename="/home/chrism/Documents/Programming/refreshing/chrome-extension/icons/19-off.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="44.368421"
+     inkscape:cx="9.5"
+     inkscape:cy="11.303084"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1022"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2987"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="2.7755576e-17px"
+       originy="0px"
+       spacingx="0.5px"
+       spacingy="0.5px" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="9,19"
+       id="guide2989" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="10,19"
+       id="guide2991" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="19,10"
+       id="guide2993" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="19,9"
+       id="guide2995" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="18,19"
+       id="guide3767" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="19,18"
+       id="guide3769" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="1,0"
+       id="guide3771" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="2.7755576e-17,1"
+       id="guide3773" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1033.3622)">
+    <path
+       transform="translate(0,1033.3622)"
+       style="color:#000000;fill:none;stroke:#2e3436;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 17.320168,4.3105224 C 17.281211,4.1852705 17.236263,4.0626578 17.18566,3.9430195 16.983249,3.4644661 16.690356,3.0335017 16.328427,2.6715729 15.604569,1.9477153 14.60457,1.5 13.5,1.5 c -2.209139,0 -4,1.790861 -4,4 l 0,8 c 0,2.209139 -1.790861,4 -4,4 -2.209139,0 -4,-1.790861 -4,-4 0,-2.209139 1.790861,-4 4,-4 l 8,0 c 1.10457,0 2.10457,-0.4477152 2.828427,-1.1715729 0.180965,-0.1809644 0.34467,-0.3791877 0.488436,-0.5919891 0.143766,-0.2128013 0.267592,-0.4401808 0.368797,-0.6794575"
+       id="path3775"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csssccssccssc" />
+    <path
+       style="fill:none;stroke:#2e3436;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       d="m 17.5,0.5 c 0,3.5 0,4 0,4 l -4,0"
+       id="path3777"
+       inkscape:connector-curvature="0"
+       transform="translate(0,1033.3622)"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

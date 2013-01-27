@@ -39,13 +39,13 @@ var stop = function (tab) {
 // do whatever's needed to put the page into refreshing or not-refreshing state
 var syncState = function (tab) {
   if (isRefreshing[tab.id]) {
-    chrome.pageAction.setIcon({tabId: tab.id, path: 'icons/16-on.png'});
+    chrome.pageAction.setIcon({tabId: tab.id, path: 'icons/19-on.png'});
     chrome.pageAction.setTitle({tabId: tab.id, title: 'Refreshing is started'});
 
     refreshing(tab);
     console.info('Refreshing started');
   } else {
-    chrome.pageAction.setIcon({tabId: tab.id, path: 'icons/16-off.png'});
+    chrome.pageAction.setIcon({tabId: tab.id, path: 'icons/19.png'});
     chrome.pageAction.setTitle({tabId: tab.id, title: 'Refreshing is stopped'});
 
     reqs[tab.id] && reqs[tab.id].abort();
