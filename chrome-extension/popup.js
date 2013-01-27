@@ -14,6 +14,14 @@ var getCurrentTab = function (callback) {
 
 var bg = chrome.extension.getBackgroundPage();
 
+var ping = function (targetURL, onSuccess, onFailure) {
+  var req = new XMLHttpRequest();
+  req.open('GET', targetURL);
+  req.addEventListener('load', onSuccess);
+  req.addEventListener('error', onFailure);
+  req.send();
+};
+
 // monitor connectivity to the server, telling the user if connection goes down
 // (as long as they're looking at the popup)
 var pingTest = function () {
@@ -34,7 +42,6 @@ var pingTest = function () {
 
   var transition = function (action) {
     state = transitionTable[state][action];
-    console.log(action, 'towards', state);
 
     switch (state) {
       case 'good':
@@ -52,23 +59,15 @@ var pingTest = function () {
     }
 
     window.setTimeout(function () {
-      ping(onSuccess, onFailure);
+      ping(targetURL, onSuccess, onFailure);
     }, (state === 'bad') ? 1000 : 5000);
   };
 
-  var ping = function (onSuccess, onFailure) {
-    console.log('ping');
-    var req = new XMLHttpRequest();
-    req.open('GET', 'http://127.0.0.1:7053/ping/');
-    req.addEventListener('load', onSuccess);
-    req.addEventListener('error', onFailure);
-    req.send();
-  };
-
+  var targetURL = 'http://127.0.0.1:7053/ping/';
   var onSuccess = function () { transition('success'); };
   var onFailure = function () { transition('failure'); };
 
-  ping(onSuccess, onFailure);
+  ping(targetURL, onSuccess, onFailure);
 };
 
 window.onload = function () {
@@ -103,10 +102,11 @@ window.onload = function () {
       syncUI();
     };
 
-    syncUI();
-    pingTest();
-
     startEl.addEventListener('click', onStart);
     stopEl.addEventListener('click', onStop);
+    syncUI();
+
+    pingTest('http://127.0.0.1:7053/ping/');
+
   });
 };
