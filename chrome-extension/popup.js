@@ -37,37 +37,43 @@ var pingTest = function () {
     , 'fixed': { 'success': 'fixed', 'failure': 'bad' }
     };
 
-  var badEl = $('connection-error');
-  var fixedEl = $('connection-fixed');
+  var badPingEl = $('connection-error');
+  var fixedPingEl = $('connection-fixed');
 
+  // update the UI to reflect that `action` just happened
   var transition = function (action) {
     state = transitionTable[state][action];
 
     switch (state) {
       case 'good':
-        badEl.style.display = 'none';
-        fixedEl.style.display = 'none';
+        badPingEl.style.display = 'none';
+        fixedPingEl.style.display = 'none';
         break;
       case 'bad':
-        badEl.style.display = '';
-        fixedEl.style.display = 'none';
+        badPingEl.style.display = '';
+        fixedPingEl.style.display = 'none';
         break;
       case 'fixed':
-        badEl.style.display = 'none';
-        fixedEl.style.display = '';
+        badPingEl.style.display = 'none';
+        fixedPingEl.style.display = '';
         break;
     }
-
-    window.setTimeout(function () {
-      ping(targetURL, onSuccess, onFailure);
-    }, (state === 'bad') ? 1000 : 5000);
   };
 
-  var targetURL = 'http://127.0.0.1:7053/ping/';
   var onSuccess = function () { transition('success'); };
   var onFailure = function () { transition('failure'); };
 
-  ping(targetURL, onSuccess, onFailure);
+  var testContinuously = function () {
+    ping('http://127.0.0.1:7053/ping/', onSuccess, onFailure);
+
+    // we test more quickly when in a failure state because we assume the user
+    // is trying to fix the problem and we want to give them fast feedback
+    window.setTimeout(function () {
+      testContinuously();
+    }, (state === 'bad') ? 1000 : 5000);
+  };
+
+  testContinuously();
 };
 
 window.onload = function () {
