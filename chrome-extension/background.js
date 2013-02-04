@@ -7,16 +7,14 @@ var reqs = {};
 
 // return true if Refreshing should be enabled for the given URL
 var enabledForURL = function (url) {
-  // use the DOM to parse the URL (probably more robust than any regex)
-  var a = document.createElement('a');
-  a.href = url;
+  var urlInfo = parseURL(url);
 
-  if (a.protocol === 'file:') {
+  if (urlInfo.protocol === 'file:') {
     return true;
   }
 
   var allowedHostnames = ['127.0.0.1', 'localhost'];
-  if (allowedHostnames.indexOf(a.hostname) !== -1) {
+  if (allowedHostnames.indexOf(urlInfo.hostname) !== -1) {
     return true;
   }
 
@@ -69,7 +67,7 @@ var syncState = function (tab) {
     reqs[tab.id] && reqs[tab.id].abort();
     console.info('Refreshing stopped');
   }
-}
+};
 
 // attach the refreshing behavior to the tab
 var refreshing = function (tab) {

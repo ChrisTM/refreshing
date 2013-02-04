@@ -12,7 +12,10 @@
   , "http://127.0.0.1:7052/*"
   ]
 , "background":
-  { "scripts": [ "background.js" ]
+  { "scripts":
+    [ "util.js"
+    , "background.js"
+    ]
   }
 , "page_action":
   { "default_title": "Configure Refreshing"

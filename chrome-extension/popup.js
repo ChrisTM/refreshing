@@ -91,9 +91,10 @@ window.onload = function () {
       pathEl.disabled = isRefreshing;
 
       if (isRefreshing) {
-        pathEl.value = bg.path[tab.id]
+        pathEl.value = bg.path[tab.id];
       } else {
-        pathEl.value = tab.url.substr('file://'.length);
+        var urlInfo = parseURL(tab.url);
+        pathEl.value = urlInfo.pathname;
       }
     };
 

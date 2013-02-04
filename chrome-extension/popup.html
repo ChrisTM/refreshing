@@ -4,13 +4,14 @@
 <head>
   <title>Configure refreshing</title>
   <link rel=stylesheet href=popup.css>
+  <script src=util.js></script>
   <script src=popup.js></script>
 </head>
 
 <body>
   <h1>Refreshing</h1>
   <p>Watch for changes in this file or directory:</p>
-  <input id=path>
+  <input id=path required>
   <div id=buttons>
     <button disabled id=start>Start</button>
     <button disabled id=stop>Stop</button>
