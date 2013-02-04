@@ -5,13 +5,31 @@ var isRefreshing = {};
 var path = {};
 var reqs = {};
 
+// return true if Refreshing should be enabled for the given URL
+var enabledForURL = function (url) {
+  // use the DOM to parse the URL (probably more robust than any regex)
+  var a = document.createElement('a');
+  a.href = url;
+
+  if (a.protocol === 'file:') {
+    return true;
+  }
+
+  var allowedHostnames = ['127.0.0.1', 'localhost'];
+  if (allowedHostnames.indexOf(a.hostname) !== -1) {
+    return true;
+  }
+
+  return false;
+};
+
 // show/hide the page action depending on url
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   if (changeInfo.status !== 'complete') {
     return;
   }
 
-  if (/^file:\/\//.test(tab.url)) {
+  if (enabledForURL(tab.url)) {
     chrome.pageAction.show(tabId);
   } else {
     chrome.pageAction.hide(tabId);
