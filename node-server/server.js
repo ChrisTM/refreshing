@@ -29,7 +29,14 @@ var respondOnChange = function (req, res, dirname) {
       // there's no built-in 'end' event, so we emit it ourselves. some cleanup
       // code listens for this event
       res.emit('end');
-      res.end();
+      // Wait for things to settle before telling the browser to reload.  I do
+      // not yet understand why this is necessary; without it, the browser
+      // sometimes produces a file-not-found condition when reloading. I'd like
+      // to understand this better so that we can have a 'more correct' way of
+      // knowing when it is safe to send the reload signal to the browser.
+      setTimeout(function () {
+        res.end();
+      }, 100);
     }
   });
 
@@ -48,7 +55,7 @@ var respondOnChange = function (req, res, dirname) {
 
 
 var refreshingView = function (req, res) {
-  var pathname = url.parse(req.url, true).query['path'];
+  var pathname = url.parse(req.url, true).query.path;
   var dirname = path.dirname(pathname);
 
   console.log('Watching "' + dirname + '"');
