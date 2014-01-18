@@ -3,6 +3,22 @@ var url = require('url');
 var path = require('path');
 var fs = require('fs');
 
+// A list of extensions that should cause the server to send the refresh
+// signal. Later versions might move this list or the behavior to the browser
+// so that the extensions are configurable via the browser extension.
+var whiteListExtensions = [
+  'html,htm,xhtml,xht', // markup
+  'css, js',
+  'jpeg,jpg,png,bmp,ico,gif,svg', // images
+  'asp,aspx,cfm,cgi,jsp,php,py', // dynamic pages
+  'json,atom,xml,rss', // feeds, data
+  'ogg,flv,mkv,m4v,mov', // audio, video
+  'woff,ttf,eot', // fonts
+].join(',');
+
+// whiteList.test(filename) returns true if the filename has one of the above extensions.
+var whiteList = new RegExp('[^/]+.(' + whiteListExtensions.replace(/,/g, '|') + ')$');
+
 
 /* For `dirname` and every directory name that is a subdirectory of `dirname`,
  * call `callback` with that directory name.
@@ -24,8 +40,8 @@ var dirWalk = function (dirname, callback) {
 
 var respondOnChange = function (req, res, dirname) {
   var watcher = fs.watch(dirname, function (event, filename) {
-    console.log('Change detected.', event, filename);
-    if (event === 'change') {
+    if (event === 'change' && whiteList.test(filename)) {
+      console.log('Change detected:', filename);
       // there's no built-in 'end' event, so we emit it ourselves. some cleanup
       // code listens for this event
       res.emit('end');
