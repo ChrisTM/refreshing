@@ -10,12 +10,16 @@
 
 <body>
   <h1>Refreshing</h1>
-  <p>Watch for changes in this file or directory:</p>
-  <input id=path required>
-  <div id=buttons>
-    <button disabled id=start>Start</button>
-    <button disabled id=stop>Stop</button>
-  </div>
+
+  <form>
+    <p>Watch for changes in this file or directory:</p>
+    <input id=path name=path required>
+    <div id=buttons>
+      <button disabled id=start type=submit>Start</button>
+      <button disabled id=stop>Stop</button>
+    </div>
+  </form>
+
   <div class=clearfix></div>
 
   <div id=connection-error style="display: none;">
