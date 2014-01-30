@@ -8,7 +8,7 @@ var fs = require('fs');
 // so that the extensions are configurable via the browser extension.
 var whiteListExtensions = [
   'html,htm,xhtml,xht', // markup
-  'css, js',
+  'css,js',
   'jpeg,jpg,png,bmp,ico,gif,svg', // images
   'asp,aspx,cfm,cgi,jsp,php,py', // dynamic pages
   'json,atom,xml,rss', // feeds, data
